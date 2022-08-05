@@ -1,0 +1,335 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Atlas",
+    "description": "Está é uma documentação sobre a Atlas API",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/users": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "Create a user",
+        "description": "A rota deve receber name, e email dentro do corpo da requisição para que seja possível cadastrar um usuário.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  }
+                },
+                "example": {
+                  "name": "name sample",
+                  "email": "email@sample.com"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "uuid": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "email": {
+                      "type": "string"
+                    },
+                    "admin": {
+                      "type": "boolean"
+                    },
+                    "created_at": {
+                      "type": "Date"
+                    },
+                    "updated_at": {
+                      "type": "Date"
+                    }
+                  },
+                  "example": {
+                    "uuid": "a8113b88-bcc1-48a0-ae27-49b4baf74c16",
+                    "name": "name sample",
+                    "email": "email@sample.com",
+                    "admin": false,
+                    "created_at": "2022-08-05T03:00:09.757Z",
+                    "updated_at": "2022-08-05T03:00:09.757Z"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad resquest",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "error": "User Already Exists!"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["Users"],
+        "summary": "List all users",
+        "description": "A rota deve receber, pelo header da requisição, uma propriedade user_id contendo o id do usuário e retornar uma lista com todos os usuários cadastrados. O id deverá ser usado para validar se o usuário que está solicitando a listagem é um admin. O retorno da lista deve ser feito apenas se o usuário for admin. ",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "user_id",
+            "required": true,
+            "description": "id do usuário",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "a8113b88-bcc1-48a0-ae27-49b4baf74c16"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "uuid": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "email": {
+                        "type": "string"
+                      },
+                      "admin": {
+                        "type": "boolean"
+                      },
+                      "created_at": {
+                        "type": "Date"
+                      },
+                      "updated_at": {
+                        "type": "Date"
+                      }
+                    }
+                  },
+
+                  "example": [
+                    {
+                      "uuid": "a8113b88-bcc1-48a0-ae27-49b4baf74c16",
+                      "name": "name sample",
+                      "email": "email@sample.com",
+                      "admin": false,
+                      "created_at": "2022-08-05T03:00:09.757Z",
+                      "updated_at": "2022-08-05T03:00:09.757Z"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad resquest",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "error": "User not exists"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{user_id}": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "Show all users",
+        "description": "A rota deve receber, nos parâmetros da rota, o id de um usuário e devolver as informações do usuário encontrado pelo corpo da resposta.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "user_id",
+            "required": true,
+            "description": "id do usuário",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "a8113b88-bcc1-48a0-ae27-49b4baf74c16"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "uuid": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "email": {
+                      "type": "string"
+                    },
+                    "admin": {
+                      "type": "boolean"
+                    },
+                    "created_at": {
+                      "type": "Date"
+                    },
+                    "updated_at": {
+                      "type": "Date"
+                    }
+                  },
+
+                  "example": {
+                    "uuid": "a8113b88-bcc1-48a0-ae27-49b4baf74c16",
+                    "name": "name sample",
+                    "email": "email@sample.com",
+                    "admin": false,
+                    "created_at": "2022-08-05T03:00:09.757Z",
+                    "updated_at": "2022-08-05T03:00:09.757Z"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad resquest",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "error": "User not exists"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{user_id}/admin": {
+      "patch": {
+        "tags": ["Users"],
+        "summary": "Trun a user to admin",
+        "description": "A rota deve receber, nos parâmetros da rota, o id de um usuário e transformar esse usuário em admin.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "user_id",
+            "required": true,
+            "description": "id do usuário",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "a8113b88-bcc1-48a0-ae27-49b4baf74c16"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "uuid": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "email": {
+                      "type": "string"
+                    },
+                    "admin": {
+                      "type": "boolean"
+                    },
+                    "created_at": {
+                      "type": "Date"
+                    },
+                    "updated_at": {
+                      "type": "Date"
+                    }
+                  },
+                  "example": {
+                    "uuid": "a8113b88-bcc1-48a0-ae27-49b4baf74c16",
+                    "name": "name sample",
+                    "email": "email@sample.com",
+                    "admin": true,
+                    "created_at": "2022-08-05T03:00:09.757Z",
+                    "updated_at": "2022-08-05T03:00:09.757Z"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad resquest",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "error": "User Already Exists!"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
